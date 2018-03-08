@@ -59,6 +59,7 @@ int CIEZ::reqInput(int mindelim,int maxdelim)
 						SetConsoleCursorPosition(consoleHandle, position);
 						break;
 					}
+				Sleep(10);
 			}
 		}
 };
