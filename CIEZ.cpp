@@ -1,6 +1,6 @@
 #include "CIEZ.h"
 
-CIEZ::CIEZ(HANDLE &h)
+CIEZ::CIEZ(HANDLE &h, short startingXpos,short startingYpos)
 {
     	VK[0] = VK_RETURN;
 		VK[1] = VK_DOWN;
@@ -9,8 +9,21 @@ CIEZ::CIEZ(HANDLE &h)
 		GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
 		consoleID = GetForegroundWindow();
 		begCoord = { 0,0 };
-		position = { 0,0 };
+		position = { startingXpos,startingXpos };
 }
+
+CIEZ::CIEZ(HANDLE &h)
+{
+	VK[0] = VK_RETURN;
+	VK[1] = VK_DOWN;
+	VK[2] = VK_UP;
+	consoleHandle = h;
+	GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
+	consoleID = GetForegroundWindow();
+	begCoord = { 0,0 };
+	position = { 0,0 };
+}
+
 
 CIEZ::~CIEZ() {CloseHandle(consoleHandle);}
 
@@ -22,24 +35,25 @@ void CIEZ::clearScreen()
 	SetConsoleCursorPosition(consoleHandle, begCoord);
 }
 
+void CIEZ::setNewPosition(short x, short y) { position.X = x; position.Y = y;}
+void CIEZ::updatePosition() {SetConsoleCursorPosition(consoleHandle, position);}
+
 int CIEZ::reqInput(int mindelim,int maxdelim)
 {
     SetConsoleCursorPosition(consoleHandle, position);
 		for(;;)
 		{
 		GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
-		//CURSOR IS OUT OF MAXDELIM RANGE
 		
 		if (consoleInfo.dwCursorPosition.Y + 1 > maxdelim)
 			{
 				position.Y = mindelim + 1; 
 				SetConsoleCursorPosition(consoleHandle, position);
 			}
-			//CURSOR IS OUT OF MINDELIMITATOR RANGE
+
 			if (position.Y <= mindelim)
 			{
 				position.Y = maxdelim - 1;
-				
 				SetConsoleCursorPosition(consoleHandle, position);
 			}
 			for (auto &vKey : VK)
@@ -59,7 +73,7 @@ int CIEZ::reqInput(int mindelim,int maxdelim)
 						SetConsoleCursorPosition(consoleHandle, position);
 						break;
 					}
-				Sleep(10);
 			}
+			Sleep(10);
 		}
 };

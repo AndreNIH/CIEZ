@@ -15,9 +15,12 @@ class CIEZ
 	DWORD writtenChars;
 	DWORD screenSize;
 public:
+CIEZ(HANDLE &h,short startingXpos, short startingYpos);
 CIEZ(HANDLE &h);
 ~CIEZ();
 void clearScreen();
+void setNewPosition(short x,short y);
+void updatePosition();
 int reqInput(int mindelim, int maxdelim);
 };
 #endif
