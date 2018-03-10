@@ -9,7 +9,7 @@ CIEZ::CIEZ(HANDLE &h, short startingXpos,short startingYpos)
 		GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
 		consoleID = GetForegroundWindow();
 		begCoord = { 0,0 };
-		position = { startingXpos,startingXpos };
+		position = { startingXpos,startingYpos };
 }
 
 CIEZ::CIEZ(HANDLE &h)
